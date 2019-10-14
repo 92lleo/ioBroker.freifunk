@@ -81,6 +81,8 @@ function startAdapter(options) {
 
 function main() {
 
+    adapter.log.info("hallooo");
+
     // The adapters config (in the instance object everything under the attribute "native") is accessible via
     // adapter.config:
     adapter.log.info("nodelist url:" + adapter.config.communityUrl);
@@ -104,7 +106,7 @@ function main() {
     });
 
     // in this template all states changes inside the adapters namespace are subscribed
-    adapter.subscribeStates("*");
+    //adapter.subscribeStates("*");
 
     /*
         setState examples
@@ -120,15 +122,12 @@ function main() {
     // same thing, but the state is deleted after 30s (getState will return null afterwards)
     adapter.setState("testVariable", { val: true, ack: true, expire: 30 });
 
-    // examples for the checkPassword/checkGroup functions
-    adapter.checkPassword("admin", "iobroker", (res) => {
-        adapter.log.info("check user admin pw ioboker: " + res);
-    });
-
-    adapter.checkGroup("admin", "admin", (res) => {
-        adapter.log.info("check group user admin group admin: " + res);
-    });
+    setTimeout(function() {
+        adapter.stop();
+    }, 8000);
+    //setTimeout(this.stop.bind(this), 10000);
 }
+
 
 // @ts-ignore parent is a valid property on module
 if (module.parent) {
