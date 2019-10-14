@@ -24,56 +24,25 @@
 
     <div class="m adapter-container">
         <div class="row">
-            <!-- Forms are the standard way to receive user inputted data.
-             Learn more http://materializecss.com/forms.html-->
-            <div class="row">
-                <div class="input-field col s6">
-                    <img src="freifunk.png" class="logo">
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s3">
-                    <input class="value" id="test1" type="checkbox" />
-                    <label for="test1" class="translate">test1</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12 m6 l4">
-                    <input class="value" id="myText" type="text">
-                    <label for="myText">Text</label>
-                    <span class="translate">Descriptions of the input field</span>
-                </div>
-                <div class="input-field col s12 m6 l4">
-                    <input type="number" class="value" id="test2" />
-                    <label for="test2" class="translate">Number</label>
-                    <!-- Important: label must come directly after input. Label is important. -->
-                    <span class="translate">test2</span>
-                </div>
-                <div class="input-field col s12 m6 l4">
-                    <input id="email" type="email" class="value validate">
-                    <label for="email" data-error="wrong" data-success="right">Email</label>
-                    <!--  You can add custom validation messages by adding either data-error or data-success attributes to your input field labels.-->
-                    <span class="translate">Verification input</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12 m4">
-                    <select class="value" id="mySelect">
-                        <option value="auto" class="translate">Auto</option>
-                        <option value="manual" class="translate">Manual</option>
-                    </select>
-                    <label for="mySelect" class="translate">My select</label>
-                    <!-- Important: label must come directly after select. Label is important. -->
-                </div>
-                <div class="input-field col s12 m8">
-                    <i class="material-icons prefix">mode_edit</i>
-                    <textarea id="Textarea" class="value materialize-textarea"></textarea>
-                    <label for="Textarea">Message</label>
-                </div>
-            </div>
+          <div class="input-field col s6"><img class="logo" src="freifunk.png" /></div>
         </div>
-    </div>
-
+        <div class="row">
+          <div class="input-field col s12 m4"><select id="community" class="value">
+            <option class="translate" value="muenchen">M&uuml;nchen</option>
+            <option class="translate" value="donau-ries">Donau-Ries</option>
+            </select><label class="translate" for="community">Community</label> <span class="translate">Select your Freifunk community here. Restart adapter if you can't find it</span></div>
+          <div class="input-field col s12 m6 l4"><input id="community-url" class="value" type="url" /> <label for="community-url">Nodelist URL</label> <span class="translate">optional - You may add your nodelist url here if you can't find it in the dropdown</span></div>
+        </div>
+        <div class="row">
+          <span class="translate">You can specify filters for your nodes. If you leave them empty, all nodes will be saved as objects. These are "or" filters, so more filters mean more matches. IDs are checked by exact match, contact and name are checkt by "contains"</span>         
+        </div>
+        <div class="row">         
+          <div class="input-field col s12 m6 l4"><input id="id" class="value" type="text" /> <label for="id">IDs</label> <span class="translate">optional - Add your node ID(s) here, separated by "," (in most communities, this is the mac address)</span></div>
+          <div class="input-field col s12 m6 l4"><input id="contact" class="value" type="text" /> <label for="contact">Contact</label> <span class="translate">optional - Add your contact info(s) here, separated by ","</span></div>
+          <div class="input-field col s12 m6 l4"><input id="name" class="value" type="text" /> <label for="name">Name</label> <span class="translate">Add your node name(s) here, separated by "," (tipp: if you have more routers, use a common prefix and set it her)</span></div>
+        </div>
+  </div>
+  
 </body>
 
 </html>
