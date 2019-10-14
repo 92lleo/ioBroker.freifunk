@@ -1,0 +1,95 @@
+{
+    "common": {
+        "name": "freifunk",
+        "version": "0.0.1",
+        "news": {
+            "0.0.1": {
+                "en": "initial release",
+                "de": "Erstveröffentlichung",
+                "ru": "Начальная версия",
+                "pt": "lançamento inicial",
+                "nl": "Eerste uitgave",
+                "fr": "Première version",
+                "it": "Versione iniziale",
+                "es": "Versión inicial",
+                "pl": "Pierwsze wydanie",
+                "zh-cn": "首次出版"
+            }
+        },
+        "title": "Freifunk",
+        "titleLang": {
+            "en": "Freifunk",
+            "de": "Freifunk",
+            "ru": "Freifunk",
+            "pt": "Freifunk",
+            "nl": "Freifunk",
+            "fr": "Freifunk",
+            "it": "Freifunk",
+            "es": "Freifunk",
+            "pl": "Freifunk",
+            "zh-cn": "弗雷芬克"
+        },
+        "desc": {
+            "en": "monitor freifunk routers",
+            "de": "Überwachen Sie Freifunk-Router",
+            "ru": "монитор фрайфанк роутеров",
+            "pt": "monitorar roteadores freifunk",
+            "nl": "freifunk routers bewaken",
+            "fr": "surveiller les routeurs freifunk",
+            "it": "monitorare i router freifunk",
+            "es": "supervisar enrutadores freifunk",
+            "pl": "monitorować routery Freifunk",
+            "zh-cn": "监控freifunk路由器"
+        },
+        "authors": [
+            "92lleo <leonhard@kuenzler.io>"
+        ],
+        "keywords": [
+            "freifunk",
+            "wifi",
+            "wlan",
+            "monitor"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "main.js",
+        "icon": "freifunk.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/92lleo/ioBroker.freifunk/master/admin/freifunk.png",
+        "readme": "https://github.com/92lleo/ioBroker.freifunk/blob/master/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "infrastructure",
+        "compact": true,
+        "materialize": true,
+        "materializeTab": true,
+        "adminTab": {
+            "singleton": true,
+            "name": {
+                "en": "Freifunk",
+                "de": "Freifunk",
+                "ru": "Freifunk",
+                "pt": "Freifunk",
+                "nl": "Freifunk",
+                "fr": "Freifunk",
+                "it": "Freifunk",
+                "es": "Freifunk",
+                "pl": "Freifunk",
+                "zh-cn": "弗雷芬克"
+            },
+            "link": "",
+            "fa-icon": "info"
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=1.4.2"
+            }
+        ]
+    },
+    "native": {
+        "option1": true,
+        "option2": "42"
+    },
+    "objects": [],
+    "instanceObjects": []
+}
