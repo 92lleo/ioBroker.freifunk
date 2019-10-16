@@ -18,6 +18,7 @@ const request = require('request');
  */
 let adapter;
 
+
 /**
  * Starts the adapter instance
  * @param {Partial<ioBroker.AdapterOptions>} [options]
@@ -81,12 +82,11 @@ function startAdapter(options) {
 
 function main() {
 
-    adapter.log.info("hallooo");
-
     // The adapters config (in the instance object everything under the attribute "native") is accessible via
     // adapter.config:
     adapter.log.info("nodelist url:" + adapter.config.communityUrl);
     adapter.log.info("ids: " + adapter.config.id);
+    adapter.log.info("community: " + adapter.config.community);
 
     /*
         For every state in the system there has to be also an object of type state
@@ -104,6 +104,96 @@ function main() {
         },
         native: {},
     });
+
+    if(!adapter.config.communityUrl) {
+        adapter.log.error("communityUrl is not set, please check settings")
+    }
+
+    else {
+            adapter.log.debug('remote request');
+
+            request(
+                {
+                    url: "https://gw02.ext.ffmuc.net/nodelist.json",//adapter.config.communityUrl,
+                    json: true
+                },
+                function (error, response, content) {
+                    adapter.log.debug('remote request done');
+
+                    if (!error && response.statusCode == 200) {
+
+                        if (content) {
+                            var nodes = content.nodes
+
+                            var callback = function(val){
+                                //
+                            }
+
+                            nodes.forEach(function(entry) {
+                                if (entry.name.toUpperCase().includes(adapter.config.name.toUpperCase())){
+
+                                    adapter.createState('', entry.id, 'name', {
+                                        name: entry.id,
+                                        def: entry.name,
+                                        type: 'string',
+                                        read: 'true',
+                                        write: 'false',
+                                        role: 'value',
+                                        desc: 'node name'
+                                    }, callback);
+
+                                    adapter.createState('', entry.id, 'id', {
+                                        name: entry.id,
+                                        def: entry.id,
+                                        type: 'string',
+                                        read: 'true',
+                                        write: 'false',
+                                        role: 'value',
+                                        desc: 'node id'
+                                    }, callback);
+
+                                    adapter.createState('', entry.id, 'online', {
+                                        name: entry.id,
+                                        def: entry.status.online,
+                                        type: 'boolean',
+                                        read: 'true',
+                                        write: 'false',
+                                        role: 'value',
+                                        desc: 'online state'
+                                    }, callback);
+
+                                    adapter.createState('', entry.id, 'clients', {
+                                        name: entry.id,
+                                        def: entry.status.clients,
+                                        type: 'number',
+                                        read: 'true',
+                                        write: 'false',
+                                        role: 'value',
+                                        desc: 'num of clients connected'
+                                    }, callback);
+
+                                     adapter.createState('', entry.id, 'lastcontact', {
+                                        name: entry.id,
+                                        def: entry.status.lastcontact,
+                                        type: 'string',
+                                        read: 'true',
+                                        write: 'false',
+                                        role: 'value',
+                                        desc: 'num of clients connected'
+                                    }, callback);
+                                }
+                            });
+                        } else {
+                            adapter.log.warn('Response has no valid content. Check your community setting and try again.');
+                        }
+                    } else {
+                        adapter.log.warn(error);
+                    }
+                }
+            );
+    }
+
+
 
     // in this template all states changes inside the adapters namespace are subscribed
     //adapter.subscribeStates("*");
@@ -124,7 +214,7 @@ function main() {
 
     setTimeout(function() {
         adapter.stop();
-    }, 8000);
+    }, 15000);
     //setTimeout(this.stop.bind(this), 10000);
 }
 
