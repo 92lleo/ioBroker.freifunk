@@ -114,7 +114,7 @@ function main() {
 
             request(
                 {
-                    url: "https://gw02.ext.ffmuc.net/nodelist.json",//adapter.config.communityUrl,
+                    url: adapter.config.communityUrl, // "https://gw02.ext.ffmuc.net/nodelist.json"
                     json: true
                 },
                 function (error, response, content) {
@@ -129,8 +129,38 @@ function main() {
                                 //
                             }
 
+                            var contacts = adapter.config.contact.toUpperCase().split(";");
+                            var names = adapter.config.name.toUpperCase().split(";");
+                            var ids = adapter.config.id.toUpperCase().split(";");
+
+                            var found = false;
+
                             nodes.forEach(function(entry) {
-                                if (entry.name.toUpperCase().includes(adapter.config.name.toUpperCase())){
+
+                                // check for ID matches
+                                found = ids.includes(entry.id.toUpperCase());
+
+                                // if not already found, check for name matches
+                                if(!found){
+                                    for (const name of names) {
+                                        if((name != "") && (entry.name.toUpperCase().includes(name))) {
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                // check for contact matches
+                                //if(!found){
+                                //    for (contact in contacts) {
+                                //        if(entry.name.toUpperCase().includes(name)) {
+                                //            found = true;
+                                //            break;
+                                //        }
+                                //   }
+                                //}                                
+
+                                if (found){
 
                                     adapter.createState('', entry.id, 'name', {
                                         name: entry.id,
