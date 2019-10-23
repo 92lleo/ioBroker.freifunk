@@ -179,7 +179,7 @@ function main() {
                                         read: 'true',
                                         write: 'false',
                                         role: 'value',
-                                        desc: 'num of clients connected'
+                                        desc: 'last seen value'
                                     }, callback);
                                 }
                             });
