@@ -148,13 +148,27 @@ function main() {
     adapter.log.info("ids: " + adapter.config.id);
     adapter.log.info("community: " + adapter.config.community);
 
-
-    if(!adapter.config.communityUrl) {
-        adapter.log.error("communityUrl is not set, please check settings")
+    let url;
+    if(adapter.config.communityUrl){
+        url = adapter.config.communityUrl;
+    } else {
+        if(!adapter.config.communityDirectory){
+            adapter.log.error("Instance does not have communityDirectory, please reload")
+            return;
+        }
+        let communityDirectory = JSON.parse(adapter.config.communityDirectory);
+        if(!communityDirectory){
+            adapter.log.error("Instance does not have communityDirectory or communityUrl, please reload")
+            return;
+        }
+        let community = adapter.config.community;
+        url = communityDirectory[community];
+        if(!url){
+            adapter.log.error("no url found for given community")
+        }
     }
 
-    else {
-            adapter.log.debug('remote request');
+    adapter.log.debug('remote request');
 
     request(
         {
