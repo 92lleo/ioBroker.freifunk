@@ -306,8 +306,7 @@ function main() {
 
     setTimeout(function() {
         adapter.stop();
-    }, 15000);
-    //setTimeout(this.stop.bind(this), 10000);
+    }, 30000);
 }
 
 
