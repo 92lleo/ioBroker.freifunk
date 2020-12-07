@@ -80,7 +80,69 @@ function startAdapter(options) {
     }));
 }
 
+function getCommunities() {
+    adapter.log.info("Getting community directory");
+    const ffCommunityDirectory = 'https://api.freifunk.net/data/ffSummarizedDir.json';
+
+    request(
+        {
+            url: ffCommunityDirectory,
+            json: true
+        },
+        function (error, response, content) {
+            adapter.log.debug('remote request done');
+
+            if (!error && response.statusCode == 200) {
+                if (content) {
+                    let communityUrlMap = {};
+
+                    for (var node in content) {
+                        let item = content[node]
+                        let name = item.name;
+                        let nodeMaps = item.nodeMaps;
+                        if (!nodeMaps) {
+                            adapter.log.debug(name + ' has no nodeMaps');
+                        } else {
+                            nodeMaps.forEach(function (subitem) {
+                                if (subitem.technicalType
+                                      && subitem.technicalType === 'nodelist'
+                                      && subitem.url) {
+                                    communityUrlMap[name]=subitem.url;
+                                    adapter.log.debug(name + ", " + subitem.url);
+                                }
+                            })
+                        }
+                    }
+                    let json = JSON.stringify(communityUrlMap);
+
+                    adapter.getForeignObject('system.adapter.freifunk.'+adapter.instance, function (err, obj) {
+                        if (err) {
+                            adapter.log.error(err);
+                        } else {
+                            adapter.log.info(JSON.stringify(obj));
+                            obj.native.communityDirectory = json;
+                            obj.native.communityDirectoryReload = false;
+                            adapter.setForeignObject(obj._id, obj, function (err) {
+                                if (err) adapter.log.error(err);
+                            });
+                        }
+                    });
+
+                } else {
+                    adapter.log.error("Community directory json is emtpy");
+                }
+            } else {
+                adapter.log.error("Community directory request was not successful: "+response.statusCode);
+            }
+        }
+    );
+}
+
 function main() {
+    if(adapter.config.communityDirectoryReload){
+        getCommunities();
+        return;
+    }
 
     // The adapters config (in the instance object everything under the attribute "native") is accessible via
     // adapter.config:
