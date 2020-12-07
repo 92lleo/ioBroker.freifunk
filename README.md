@@ -16,13 +16,17 @@ monitor freifunk routers from all known communities (via api.freifunk.net)
 
 ## Changelog
 
+### 0.1.0 (2020-12-07)
+* (92lleo) beta release
+* (92lleo) get community from Freifunk directory
+
 ### 0.0.1a
 * (92lleo) initial release, alpha, work in progress
 
 ## License
 MIT License
 
-Copyright (c) 2019 Leonhard Künzler <leonhard@kuenzler.io>
+Copyright (c) 2019-2020 Leonhard Künzler <leonhard@kuenzler.io>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
