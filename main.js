@@ -144,28 +144,10 @@ function main() {
         return;
     }
 
-    // The adapters config (in the instance object everything under the attribute "native") is accessible via
-    // adapter.config:
     adapter.log.info("nodelist url:" + adapter.config.communityUrl);
     adapter.log.info("ids: " + adapter.config.id);
     adapter.log.info("community: " + adapter.config.community);
 
-    /*
-        For every state in the system there has to be also an object of type state
-        Here a simple template for a boolean variable named "testVariable"
-        Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
-    */
-    adapter.setObject("testVariable", {
-        type: "state",
-        common: {
-            name: "testVariable",
-            type: "boolean",
-            role: "indicator",
-            read: true,
-            write: true,
-        },
-        native: {},
-    });
 
     if(!adapter.config.communityUrl) {
         adapter.log.error("communityUrl is not set, please check settings")
@@ -174,117 +156,114 @@ function main() {
     else {
             adapter.log.debug('remote request');
 
-            request(
-                {
-                    url: adapter.config.communityUrl, // "https://gw02.ext.ffmuc.net/nodelist.json"
-                    json: true
-                },
-                function (error, response, content) {
-                    adapter.log.debug('remote request done');
+    request(
+        {
+            url: url, // "https://gw04.ext.ffmuc.net/nodelist.json"
+            json: true
+        },
+        function (error, response, content) {
+            adapter.log.debug('remote request done');
 
-                    if (!error && response.statusCode == 200) {
+            if (!error && response.statusCode == 200) {
 
-                        if (content) {
-                            var nodes = content.nodes
+                if (content) {
+                    var nodes = content.nodes
 
-                            var callback = function(val){
-                                //
-                            }
-
-                            var contacts = adapter.config.contact.toUpperCase().split(";");
-                            var names = adapter.config.name.toUpperCase().split(";");
-                            var ids = adapter.config.id.toUpperCase().split(";");
-
-                            var found = false;
-
-                            nodes.forEach(function(entry) {
-
-                                // check for ID matches
-                                found = ids.includes(entry.id.toUpperCase());
-
-                                // if not already found, check for name matches
-                                if(!found){
-                                    for (const name of names) {
-                                        if((name != "") && (entry.name.toUpperCase().includes(name))) {
-                                            found = true;
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                // check for contact matches
-                                //if(!found){
-                                //    for (contact in contacts) {
-                                //        if(entry.name.toUpperCase().includes(name)) {
-                                //            found = true;
-                                //            break;
-                                //        }
-                                //   }
-                                //}                                
-
-                                if (found){
-
-                                    adapter.createState('', entry.id, 'name', {
-                                        name: entry.id,
-                                        def: entry.name,
-                                        type: 'string',
-                                        read: 'true',
-                                        write: 'false',
-                                        role: 'value',
-                                        desc: 'node name'
-                                    }, callback);
-
-                                    adapter.createState('', entry.id, 'id', {
-                                        name: entry.id,
-                                        def: entry.id,
-                                        type: 'string',
-                                        read: 'true',
-                                        write: 'false',
-                                        role: 'value',
-                                        desc: 'node id'
-                                    }, callback);
-
-                                    adapter.createState('', entry.id, 'online', {
-                                        name: entry.id,
-                                        def: entry.status.online,
-                                        type: 'boolean',
-                                        read: 'true',
-                                        write: 'false',
-                                        role: 'value',
-                                        desc: 'online state'
-                                    }, callback);
-
-                                    adapter.createState('', entry.id, 'clients', {
-                                        name: entry.id,
-                                        def: entry.status.clients,
-                                        type: 'number',
-                                        read: 'true',
-                                        write: 'false',
-                                        role: 'value',
-                                        desc: 'num of clients connected'
-                                    }, callback);
-
-                                     adapter.createState('', entry.id, 'lastcontact', {
-                                        name: entry.id,
-                                        def: entry.status.lastcontact,
-                                        type: 'string',
-                                        read: 'true',
-                                        write: 'false',
-                                        role: 'value',
-                                        desc: 'last seen value'
-                                    }, callback);
-                                }
-                            });
-                        } else {
-                            adapter.log.warn('Response has no valid content. Check your community setting and try again.');
-                        }
-                    } else {
-                        adapter.log.warn(error);
+                    var callback = function (val) {
+                        //
                     }
-                }
-            );
-    }
 
+                    var contacts = adapter.config.contact.toUpperCase().split(";");
+                    var names = adapter.config.name.toUpperCase().split(";");
+                    var ids = adapter.config.id.toUpperCase().split(";");
+
+                    var found = false;
+
+                    nodes.forEach(function (entry) {
+
+                        // check for ID matches
+                        found = ids.includes(entry.id.toUpperCase());
+
+                        // if not already found, check for name matches
+                        if (!found) {
+                            for (const name of names) {
+                                if ((name != "") && (entry.name.toUpperCase().includes(name))) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        // check for contact matches
+                        //if(!found){
+                        //    for (contact in contacts) {
+                        //        if(entry.name.toUpperCase().includes(name)) {
+                        //            found = true;
+                        //            break;
+                        //        }
+                        //   }
+                        //}
+
+                        if (found) {
+
+                            adapter.createState('', entry.id, 'name', {
+                                name: entry.id,
+                                def: entry.name,
+                                type: 'string',
+                                read: true,
+                                write: false,
+                                role: 'value',
+                                desc: 'node name'
+                            }, callback);
+
+                            adapter.createState('', entry.id, 'id', {
+                                name: entry.id,
+                                def: entry.id,
+                                type: 'string',
+                                read: true,
+                                write: false,
+                                role: 'value',
+                                desc: 'node id'
+                            }, callback);
+
+                            adapter.createState('', entry.id, 'online', {
+                                name: entry.id,
+                                def: entry.status.online,
+                                type: 'boolean',
+                                read: true,
+                                write: false,
+                                role: 'value',
+                                desc: 'online state'
+                            }, callback);
+
+                            adapter.createState('', entry.id, 'clients', {
+                                name: entry.id,
+                                def: entry.status.clients,
+                                type: 'number',
+                                read: true,
+                                write: false,
+                                role: 'value',
+                                desc: 'num of clients connected'
+                            }, callback);
+
+                            adapter.createState('', entry.id, 'lastcontact', {
+                                name: entry.id,
+                                def: entry.status.lastcontact,
+                                type: 'string',
+                                read: true,
+                                write: false,
+                                role: 'value',
+                                desc: 'last seen value'
+                            }, callback);
+                        }
+                    });
+                } else {
+                    adapter.log.warn('Response has no valid content. Check your community setting and try again.');
+                }
+            } else {
+                adapter.log.warn(error);
+            }
+     });
 
 
     // in this template all states changes inside the adapters namespace are subscribed
@@ -299,12 +278,12 @@ function main() {
 
     // same thing, but the value is flagged "ack"
     // ack should be always set to true if the value is received from or acknowledged from the target system
-    adapter.setState("testVariable", { val: true, ack: true });
+    adapter.setState("testVariable", {val: true, ack: true});
 
     // same thing, but the state is deleted after 30s (getState will return null afterwards)
-    adapter.setState("testVariable", { val: true, ack: true, expire: 30 });
+    adapter.setState("testVariable", {val: true, ack: true, expire: 30});
 
-    setTimeout(function() {
+    setTimeout(function () {
         adapter.stop();
     }, 30000);
 }
